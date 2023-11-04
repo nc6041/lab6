@@ -27,16 +27,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
+            // display marker
             googleMap.addMarker(new MarkerOptions()
                     .position(mDestinationLatLng)
                     .title("Destination"));
             displayMyLocation();
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         });
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
     private void displayMyLocation() {
@@ -56,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()),
                                                 mDestinationLatLng));
+                                LatLng mCurrLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(mCurrLatLng)
+                                        .title("Current location"));
+                                displayMyLocation();
                             }
                     });
         }
